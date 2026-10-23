@@ -8,7 +8,8 @@ Aplica:
 - **Parámetros reutilizables** en vez de valores hardcodeados.
 - **Matriz RACI** de roles y responsabilidades.
 - **Control de versiones** y próxima revisión.
-- Entrega en **`.docx`** con branding del cliente o neutro.
+- **Checklist de verificación**, decisiones clave y problemas frecuentes.
+- Entrega en **`.docx`**, **`.md`** o ambos, con el branding de la empresa o en formato neutro.
 
 Sirve tanto como entregable para empresas cliente como para estandarizar procesos internos.
 

@@ -1,121 +1,179 @@
 ---
 name: sop-builder
 description: >
-  Construye procedimientos operativos estándar (SOPs) que documentan un proceso paso a paso para
-  consistencia, capacitación y delegación — tanto como entregable para empresas cliente de Strategic IA
-  como para estandarizar procesos internos. Aplica rigor RFC 2119 (DEBE / DEBERÍA / PUEDE),
-  parámetros reutilizables, RACI y control de versiones, y entrega en .docx con branding del cliente
-  o neutro. Usar cuando el usuario dice "documentar este proceso", "armar un SOP", "procedimiento
-  operativo", "manual de procedimiento", "estandarizar cómo hacemos X", "POE", "instructivo de
-  trabajo", "que el equipo lo pueda seguir sin mí", o cuando hay que convertir un proceso informal en
-  documentación operativa repetible. NO usar para descripciones de puesto (eso es descripcion-puesto)
-  ni para diseñar la automatización técnica del proceso (eso es crm-automation-setup) — el SOP
-  documenta el procedimiento, no construye el workflow.
-allowed-tools: Read, Write, Bash, Skill
+  Construye procedimientos operativos estándar (SOPs) genéricos y entregables para cualquier empresa
+  o cliente. Transforma un proceso informal, verbal o disperso en un documento estructurado,
+  accionable y repetible que cualquier miembro del equipo pueda seguir sin supervisión. Aplica rigor
+  RFC 2119 (DEBE / DEBERÍA / PUEDE), matriz RACI, control de versiones y checklist de verificación.
+  Funciona con cualquier punto de entrada: descripción en texto libre, entrevista paso a paso, o un
+  documento existente a estructurar. Entregar en .docx, .md o ambos según lo que pida el usuario.
+  Usar cuando el usuario dice "documentar este proceso", "armar un SOP", "procedimiento operativo",
+  "manual de procedimiento", "estandarizar cómo hacemos X", "POE", "instructivo de trabajo",
+  "que el equipo lo pueda seguir sin mí", "proceso paso a paso", o cuando hay que convertir
+  un proceso informal en documentación operativa repetible. NO usar para descripciones de puesto
+  ni para diseñar automatizaciones técnicas — el SOP documenta el procedimiento humano, no construye
+  el workflow automático.
+allowed-tools: Read, Write, Bash
 ---
 
 # SOP Builder — procedimientos operativos estándar
 
-Tu misión es transformar un proceso (informal, en la cabeza de alguien, o disperso) en un **SOP claro, accionable y repetible** que cualquiera del equipo pueda seguir sin supervisión. Un SOP no limita libertad: la libera, al eliminar las decisiones rutinarias para que el equipo piense en lo que importa.
+Tu misión es transformar un proceso — informal, en la cabeza de alguien, o disperso en documentos — en un **SOP claro, accionable y repetible** que cualquier miembro del equipo pueda ejecutar sin supervisión. Un SOP bien escrito no limita la autonomía del equipo: la amplía, al eliminar ambigüedad en las decisiones rutinarias para que las personas enfoquen su energía donde importa.
 
-Método base: `agent-sop` (Apache 2.0) — rigor RFC 2119, parámetros, estructura canónica — sobre el `constructor-sop` del bundle, con la capa Strategic IA (RACI, versionado, branding, salida docx).
+## Paso 0 — Encuadre inicial
 
-## Paso 0 — Encuadre (antes de escribir nada)
+Antes de escribir una sola línea del SOP, confirmá tres cosas:
 
-Definí dos cosas y recolectá el proceso:
+**1. Punto de entrada** — ¿cómo llega el proceso?
+- **Descripción libre**: el usuario describe el proceso en texto. Podés arrancar a estructurar directamente.
+- **Entrevista**: el proceso está en la cabeza de alguien. Entrevistá al dueño del proceso con las preguntas del Paso 1.
+- **Documento existente**: hay un procedimiento informal (email, planilla, manual viejo). Pedí que lo compartan y leé antes de entrevistar.
 
-1. **Ámbito** — determina branding y tono:
-   - **Cliente** (entregable de consultoría): branding del cliente desde `C:/claude/<slug>/branding/`, tono profesional adaptado al país (voseo solo AR/UY). Si el proceso es de un cliente con pipeline cargado, podés leer `modelo-negocio`/`perla-diagnostic` para entender contexto antes de entrevistar.
-   - **Interno Strategic IA**: documento operativo neutro, sin branding de cliente (cómo corrés pipelines, deploys, onboarding de clientes, etc.).
-2. **Recolección del proceso** — entrevistá al dueño del proceso una pregunta a la vez: ¿qué dispara el proceso?, ¿quién hace qué?, ¿cuáles son los pasos reales (no los ideales)?, ¿dónde se traba o falla?, ¿qué decisiones hay que tomar y con qué criterio?, ¿qué registro queda? Si la respuesta es vaga, repreguntá. No inventes pasos.
-3. **Parámetros** — identificá qué varía entre ejecuciones (cliente, monto, canal, turno) → eso son parámetros del SOP, no valores hardcodeados.
+**2. Organización y destinatario**
+Preguntá: ¿para qué empresa es este SOP y quién lo va a usar? Esto define el tono y el nivel de detalle.
 
-## Estructura canónica del SOP (plantilla a producir)
+**3. Branding y formato de salida**
+- ¿Hay logo, colores o tipografía de la empresa para el documento? (opcional — si no hay, el SOP queda en formato neutro profesional)
+- ¿El entregable es `.docx`, `.md`, o ambos?
 
-ALWAYS usar esta estructura. Cada SOP es un documento autocontenido.
+---
+
+## Paso 1 — Recolección del proceso (entrevista)
+
+Si el proceso no está claro aún, entrevistá al dueño **una pregunta a la vez**. No bombardeés con una lista larga. Esperá la respuesta antes de seguir.
+
+Preguntas guía (en orden):
+1. ¿Qué dispara este proceso? ¿Cuándo empieza?
+2. ¿Quién interviene y qué hace cada uno?
+3. ¿Cuáles son los pasos reales, no los ideales?
+4. ¿Dónde se traba o falla habitualmente?
+5. ¿Qué decisiones hay que tomar en el camino? ¿Con qué criterio?
+6. ¿Cuándo termina? ¿Qué queda registrado?
+
+Si una respuesta es vaga o inconsistente, repreguntá antes de seguir. **No inventes pasos.**
+
+**Parámetros**: identificá qué varía entre ejecuciones (cliente, producto, canal, monto, turno). Eso son parámetros del SOP — no los hardcodees como valores fijos.
+
+---
+
+## Paso 2 — Borrador y checkpoint
+
+Con la información recolectada, presentá un borrador de la estructura antes de escribir el documento completo:
+
+```
+Proceso: [nombre]
+Disparador: [qué lo activa]
+Roles identificados: [lista]
+Pasos principales: [numerados]
+Decisiones clave: [lista breve]
+Parámetros variables: [lista]
+```
+
+Preguntá: "¿Esta estructura refleja el proceso real? ¿Falta algo o hay algo incorrecto?" Corregí antes de avanzar al documento final.
+
+---
+
+## Estructura canónica del SOP
+
+Usar siempre esta plantilla. Cada SOP es un documento autocontenido.
 
 ```
 # SOP: [Nombre del proceso]
 
-| Campo | Valor |
-|---|---|
-| Propósito | Por qué existe este proceso (1-2 líneas) |
-| Dueño del proceso | Rol responsable (no nombre propio, salvo interno) |
-| Ámbito | Interno / Cliente: [empresa] |
-| Versión | v1.0 |
-| Fecha | [YYYY-MM-DD] |
-| Próxima revisión | [YYYY-MM-DD] |
+| Campo             | Valor                                              |
+|-------------------|----------------------------------------------------|
+| Propósito         | Por qué existe este proceso (1-2 líneas)           |
+| Dueño del proceso | Rol responsable (no nombre propio)                 |
+| Organización      | [Nombre de la empresa]                             |
+| Versión           | v1.0                                               |
+| Fecha             | [YYYY-MM-DD]                                       |
+| Próxima revisión  | [YYYY-MM-DD]                                       |
 
 ## 1. Alcance
-Qué incluye y qué EXCLUYE explícitamente. Los límites evitan zona gris.
+Qué incluye y qué EXCLUYE explícitamente este procedimiento.
+Los límites evitan zona gris y conflictos de responsabilidad.
 
 ## 2. Roles y responsabilidades (RACI)
 | Actividad | Responsable (R) | Aprueba (A) | Consultado (C) | Informado (I) |
-|---|---|---|---|---|
+|-----------|-----------------|-------------|----------------|---------------|
 | [actividad] | [rol] | [rol] | [rol] | [rol] |
 
-## 3. Insumos / parámetros
-- **Requeridos:** [parámetro] — [qué es]
-- **Opcionales:** [parámetro] — [default]
-- **Herramientas/accesos:** [sistemas, permisos]
+R = quien ejecuta · A = quien aprueba · C = quien aporta criterio · I = quien debe saber
+
+## 3. Insumos y recursos
+- **Información requerida:** [qué datos o documentos se necesitan para empezar]
+- **Herramientas / accesos:** [sistemas, plataformas, permisos]
+- **Parámetros variables:** [qué cambia entre ejecuciones y cómo afecta los pasos]
 
 ## 4. Procedimiento paso a paso
-1. [Acción concreta en imperativo].
-   - **Control:** [cómo se verifica que el paso quedó bien].
-   - Si [condición], entonces [acción].
-2. [Paso siguiente]…
+1. [Acción concreta en imperativo. Sujeto implícito = el rol responsable.]
+   - **Verificación:** [cómo sabe el ejecutor que este paso quedó bien]
+   - Si [condición A], entonces [acción alternativa].
+2. [Paso siguiente]
+   - **Verificación:** [...]
+
+(Continuar hasta el cierre del proceso.)
 
 ## 5. Decisiones clave
-| Situación | Acción | Quién decide |
-|---|---|---|
-| Si pasa X | Hacé Y | [rol] |
+| Situación | Acción a tomar | Quién decide |
+|-----------|----------------|--------------|
+| Si pasa X | Hacer Y        | [rol]        |
 
 ## 6. Checklist de verificación
-- [ ] [verificación]
-- [ ] [verificación]
+Lista de control para confirmar que el proceso se completó correctamente:
+- [ ] [punto de verificación]
+- [ ] [punto de verificación]
 
-## 7. Problemas comunes
-| Problema | Causa probable | Solución |
-|---|---|---|
+## 7. Problemas frecuentes
+| Problema observado | Causa probable | Acción correctiva |
+|--------------------|----------------|-------------------|
 
-## 8. Registros / evidencia
-Qué queda documentado y dónde (planilla, CRM, carpeta).
+## 8. Registros y evidencia
+Qué queda documentado al finalizar el proceso, y dónde se guarda.
 
 ## 9. Control de versiones
-| Versión | Fecha | Cambio | Autor |
-|---|---|---|---|
-| v1.0 | [fecha] | Versión inicial | [autor] |
+| Versión | Fecha | Descripción del cambio | Autor |
+|---------|-------|------------------------|-------|
+| v1.0    | [fecha] | Versión inicial       | [nombre/rol] |
 ```
+
+---
 
 ## Reglas de redacción
 
-- **RFC 2119 en español** para fijar obligatoriedad sin ambigüedad:
-  - **DEBE** = obligatorio · **NO DEBE** = prohibido · **DEBERÍA** = recomendado (se puede omitir con justificación) · **PUEDE** = opcional.
-  - Ej: *"El operador DEBE verificar el stock antes de confirmar. DEBERÍA avisar al cliente si hay demora. PUEDE ofrecer un sustituto."*
-- **Palabras simples, sin jerga.** Lo escribe quien ejecuta, no quien diseña.
-- **Pasos en imperativo y atómicos** — una acción por paso. Si un paso tiene "y", probablemente son dos.
-- **Cubrí las excepciones** — todo "¿y si pasa X?" va en Decisiones clave o Problemas comunes. Un SOP que solo cubre el caso feliz no sirve.
-- **Cada paso lleva su control** — cómo sabe el que ejecuta que lo hizo bien. Sin control, no es estandarización.
-- Diagramas/screenshots valen más que mil palabras: indicá dónde insertarlos `[insertar captura: ...]`.
+**RFC 2119 en español** para fijar obligatoriedad sin ambigüedad:
+- **DEBE** = obligatorio sin excepción
+- **NO DEBE** = prohibido sin excepción
+- **DEBERÍA** = recomendado; se puede omitir con justificación documentada
+- **PUEDE** = opcional, a criterio del ejecutor
 
-## Modos de ejecución
+Ejemplo: *"El operador DEBE verificar el stock antes de confirmar el pedido. DEBERÍA notificar al cliente si hay demora. PUEDE ofrecer un producto sustituto."*
 
-- **Interactivo** (default): presentás la estructura, validás el proceso con el dueño en checkpoints, iterás antes de generar el documento final.
-- **Auto**: si el proceso ya está claro y documentado, generás el SOP completo de una y lo presentás para revisión.
+**Otras reglas:**
+- Pasos en imperativo y atómicos: una sola acción por paso. Si hay "y", probablemente son dos pasos.
+- Palabras simples. Lo escribe quien diseña, lo ejecuta quien opera — sin jerga técnica innecesaria.
+- Cubrí las excepciones: todo "¿y si pasa X?" va en Decisiones clave o Problemas frecuentes. Un SOP que solo cubre el caso ideal no sirve en la práctica.
+- Cada paso lleva su verificación: sin control, no hay estandarización real.
+- Indicá dónde irían capturas o diagramas: `[insertar captura: descripción]`
+
+---
 
 ## Salida
 
-1. Generá el SOP final en **`.docx`** vía el skill `docx`, con branding del cliente (paleta/tipografía/logo de `C:/claude/<slug>/branding/`) si es entregable, o neutro si es interno. Respetá la regla: Word con branding del cliente por defecto, salvo orden de borrador neutro.
-2. Guardá también una copia legible (`.md`) en la carpeta correspondiente: cliente → `C:/claude/<slug>/<modulo-procesos>/`; interno → donde corresponda al proceso.
-3. Abrí el archivo generado al terminar.
+**Modo interactivo** (por defecto): presentá el borrador de estructura (Paso 2), esperá confirmación, luego generá el documento completo.
 
-## Encadenamiento (handoff)
+**Modo auto**: si el proceso ya está claro y documentado, generá el SOP completo y presentalo para revisión.
 
-- **Antes:** si el proceso es de un cliente y no está claro, leer `modelo-negocio` / `perla-diagnostic` para contexto, o entrevistar al dueño del proceso.
-- **Después:** si el proceso se va a **automatizar** (WhatsApp/CRM/IA), el SOP es el insumo — derivar a `crm-automation-setup` o a las skills de automatización de WhatsApp (Kapso). El SOP define el "qué y cómo manual"; la automatización lo ejecuta.
+Formatos de salida:
+- **`.docx`**: generalo con `python` usando `python-docx`. Si hay branding (logo, colores), aplicarlo. Si no hay branding, usar formato profesional neutro (fuente Calibri o similar, encabezado con nombre de empresa y versión, tabla de contenidos al inicio).
+- **`.md`**: guardalo como copia legible en la misma carpeta de trabajo.
+- Si el usuario no especificó formato, preguntá antes de generar.
+
+---
 
 ## Salvaguardas
 
-- No inventes pasos ni datos del proceso: si falta información, preguntá al dueño.
-- Documentá el proceso **real**, no el ideal — un SOP que nadie sigue porque no refleja la práctica es papel muerto.
-- Marcá supuestos que requieran validación del dueño antes de publicar la v1.0.
+- No inventes pasos ni datos del proceso. Si falta información, preguntá.
+- Documentá el proceso **real**, no el que debería ser. Un SOP que nadie sigue porque no refleja la práctica real es papel muerto.
+- Marcá con `[PENDIENTE VALIDACIÓN]` cualquier supuesto que requiera confirmación del dueño del proceso antes de publicar la v1.0.
+- Si detectás inconsistencias en lo que describe el usuario (pasos contradictorios, roles confusos), señalalas antes de documentar.
